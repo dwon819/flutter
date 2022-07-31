@@ -155,7 +155,7 @@ class _TimerScreen extends State<TimerScreen> {
               width: MediaQuery.of(context).size.width + 0.6,
               child: Center(
                 child: Text(
-                  secondsToString(_timer),
+                  secondTostring(_timer),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 48,
