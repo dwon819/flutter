@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
 
-class DetailScreen extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String description;
-  final String image;
+import '../models/book.dart';
 
-  DetailScreen(
-      {required this.title,
-      required this.subtitle,
-      required this.description,
-      required this.image});
+class DetailScreen extends StatelessWidget {
+  final Book book;
+  DetailScreen({required this.book});
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(book.title),
       ),
       body: Column(
         children: [
           Image.network(
-            image,
+            book.image,
           ),
           Padding(padding: EdgeInsets.all(3)),
           Row(
@@ -37,12 +31,12 @@ class DetailScreen extends StatelessWidget {
                   children: [
                     Container(
                       child: Text(
-                        title,
+                        book.title,
                         style: TextStyle(
                             fontSize: 23, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Text(subtitle),
+                    Text(book.subtitle),
                   ],
                 ),
               ),
@@ -104,7 +98,7 @@ class DetailScreen extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.all(15),
-            child: Text(description),
+            child: Text(book.description),
           )
         ],
       ),
