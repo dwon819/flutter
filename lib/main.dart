@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:study_project/screens/timer_screen.dart';
+import 'package:study_project/screens/splash_screen.dart';
 
-void main(List<String> args) {
+void main() {
   runApp(MyApp());
 }
+
+// Future main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "CountApp",
-      home: TimerScreen(),
+      title: 'TODO List App',
+      home: SplashScreen(),
     );
   }
 }
