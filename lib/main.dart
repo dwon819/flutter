@@ -1,19 +1,26 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:study_project/screens/splash_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_project/blocs/counter/counter_bloc.dart';
+import 'package:study_project/screens/counterScreen.dart';
+import 'package:study_project/screens/home_screen.dart';
 
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'TODO List App',
-      home: SplashScreen(),
+    return BlocProvider(
+      create: (context) => CounterBloc(),
+      child: MaterialApp(
+        title: 'Flutter State BloC',
+        routes: {
+          '/': (context) => HomeScreen(),
+          '/counter': (context) => CounterScreen()
+        },
+        initialRoute: '/',
+      ),
     );
   }
 }
