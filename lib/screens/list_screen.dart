@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:study_project/models/todo.dart';
-import 'package:study_project/providers/todo_default.dart';
+import 'package:study_project/providers/todo_sqlite.dart';
 
 class ListScreen extends StatefulWidget {
   @override
@@ -11,17 +12,28 @@ class ListScreen extends StatefulWidget {
 
 class _ListScreenState extends State<ListScreen> {
   List<Todo> todos = [];
-  TodoDefault todoDefault = TodoDefault();
+
+  // TodoDefault todoDefault = TodoDefault(); //sqlite 안쓸때
+  TodoSqlite todoSqlite = TodoSqlite();
+
   bool isLoading = true;
+
+  Future initdb() async {
+    await todoSqlite.initDb().then((value) async {
+      todos = await todoSqlite.getTodos();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
-      todos = todoDefault.getTodos();
-      setState(() {
-        isLoading = false;
-      });
+      initdb().then((value) => {
+            setState(() {
+              print('init Db');
+              isLoading = false;
+            })
+          });
     });
   }
 
@@ -82,12 +94,13 @@ class _ListScreenState extends State<ListScreen> {
                     actions: [
                       TextButton(
                         child: Text('추가'),
-                        onPressed: () {
+                        onPressed: () async {
+                          await todoSqlite.addTodo(
+                              Todo(title: title, description: description));
+                          List<Todo> newTodos = await todoSqlite.getTodos();
                           setState(() {
                             print('[UI] ADD');
-                            todoDefault.addTodo(
-                              Todo(title: title, description: description),
-                            );
+                            todos = newTodos;
                           });
                           Navigator.of(context).pop();
                         },
@@ -182,9 +195,12 @@ class _ListScreenState extends State<ListScreen> {
                                                   id: todos[index].id,
                                                   title: title,
                                                   description: description);
+                                              await todoSqlite
+                                                  .updateTodo(newTodo);
+                                              List<Todo> newTodos =
+                                                  await todoSqlite.getTodos();
                                               setState(() {
-                                                print('응애');
-                                                todoDefault.updateTodo(newTodo);
+                                                todos = newTodos;
                                               });
                                               Navigator.of(context).pop();
                                             },
@@ -217,9 +233,12 @@ class _ListScreenState extends State<ListScreen> {
                                           TextButton(
                                               child: Text('삭제'),
                                               onPressed: () async {
+                                                await todoSqlite.deleteTodo(
+                                                    todos[index].id ?? 0);
+                                                List<Todo> newTodos =
+                                                    await todoSqlite.getTodos();
                                                 setState(() {
-                                                  todoDefault.deleteTodo(
-                                                      todos[index].id ?? 0);
+                                                  todos = newTodos;
                                                 });
                                                 Navigator.of(context).pop();
                                               }),
