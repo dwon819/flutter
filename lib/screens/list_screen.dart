@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:study_project/models/todo.dart';
 import 'package:study_project/providers/todo_firestore.dart';
+import 'package:study_project/screens/news_screen.dart';
 
 class ListScreen extends StatefulWidget {
   @override
@@ -44,7 +45,10 @@ class _ListScreenState extends State<ListScreen> {
                 title: Text('할 일 목록 앱'),
                 actions: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => NewsScreen()));
+                    },
                     child: Container(
                       padding: EdgeInsets.all(5),
                       child: Column(
